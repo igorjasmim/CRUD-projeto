@@ -54,6 +54,9 @@ class Agenda:
         else:
             for idx, contato in enumerate(self.contatos, start=1):
                 print(f'{idx}. {contato}')
+                cont = idx
+            return cont
+            
     
     def atualizar_contato(self,indice, nome=None, telefone=None):
         if 0 <= indice < len(self.contatos):
@@ -101,10 +104,19 @@ def main():
             if agenda.listar_contatos() == False:
                 print("Opção inválida. Tente novamente.")
             else:
-                indice = int(input("Informe o número do contato a ser atualizado: ")) - 1
-                nome = input("Novo nome (deixe em branco para manter): ")
-                telefone = input("Novo telefone (deixe em branco para manter): ")
-                agenda.atualizar_contato(indice, nome, telefone)
+                
+                entrada = input("Informe o número do contato a ser atualizado: ")
+                
+                if entrada.isdigit():
+                    indice = int(entrada) - 1
+                    if (0 <= indice) and (indice + 1 <= agenda.listar_contatos()):
+                        nome = input("Novo nome (deixe em branco para manter): ")
+                        telefone = input("Novo telefone (deixe em branco para manter): ")
+                        agenda.atualizar_contato(indice, nome, telefone)
+                    else:
+                        print("Opção inválida. Tente novamente.")
+                else:
+                    print("Opção inválida. Tente novamente.")
 
         # Opção para remover contatos:
         elif opcao == '4':
@@ -112,8 +124,16 @@ def main():
             if agenda.listar_contatos() == False:
                 print("Opção inválida. Tente novamente.")
             else:
-                indice = int(input("Informe o número do contato a ser removido: ")) - 1
-                agenda.excluir_contato(indice)
+                entrada = input("Informe o número do contato a ser atualizado: ")
+                
+                if entrada.isdigit():
+                    indice = int(entrada) - 1
+                    if (0 <= indice) and (indice + 1 <= agenda.listar_contatos()):
+                        agenda.excluir_contato(indice)
+                    else:
+                        print("Opção inválida. Tente novamente.")
+                else:
+                    print("Opção inválida. Tente novamente.")
 
 
         # Opção para sair:
