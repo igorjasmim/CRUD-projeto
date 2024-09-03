@@ -15,7 +15,7 @@ def menu():  # Menu informativo com todas as funcionalidades
         ' \n 5. Sair \n {} \n'.format("***" * 10))
 
 
-def main():  # todos os metodos aplicados dentro do while
+def main():  # todos os metodos aplicados dentro do whilew
     agenda = Agenda()
     while True:
         menu()
