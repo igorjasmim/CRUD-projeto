@@ -1,10 +1,20 @@
+def validar_email(novo_email):
+    emails_validos = ['@gmail.com', '@hotmial.com', '@outlook.com', '@yahoo.com.br', '@uol.com.br']
+    if '@' in novo_email:
+        dominio = '@' + novo_email.split('@')[-1].strip()
+    else:
+        return False
+    return dominio in emails_validos
+
 class Contato:
-    def __init__(self, nome, telefone) -> None:
+    def __init__(self, nome, telefone, email) -> None:
         self._nome = nome
         self._telefone = telefone
+        self._email = email
+        self.email = email
         
     def __repr__(self) -> str:
-        return f'Nome: {self._nome} \t Telefone: {self._telefone}'
+        return f'Nome: {self._nome} \t Telefone: {self._telefone} \t E-mail: {self._email}'
     
     def __len__(self) -> None:
         return 0
@@ -14,6 +24,8 @@ class Contato:
             self._nome = nome
         if telefone:
             self._telefone = telefone
+        if email:
+            self._email = email
             
     @property
     def nome(self):
@@ -22,6 +34,10 @@ class Contato:
     @property
     def telefone(self):
         return self._telefone
+
+    @property
+    def email(self):
+        return self._email
     
     @nome.setter
     def nome(self, novo_nome):
@@ -38,12 +54,19 @@ class Contato:
         else:
             raise ValueError("Telefone inválido. Deve ser uma string não vazia.")
 
+    @email.setter
+    def email(self, novo_email):
+        while not validar_email(novo_email):
+            print('Este dompinio não pe válido para cadsatro.')
+            novo_email = input('Por favor, insira um e-mail com domínio válido: ')
+        self._email = novo_email
+
 class Agenda:
     def __init__(self):
         self.contatos = []
         
-    def criar_contato(self, nome, telefone):
-        novo_contato = Contato(nome, telefone)
+    def criar_contato(self, nome, telefone, email):
+        novo_contato = Contato(nome, telefone, email)
         self.contatos.append(novo_contato)
         print(novo_contato)
         
@@ -58,9 +81,9 @@ class Agenda:
             return cont
             
     
-    def atualizar_contato(self,indice, nome=None, telefone=None):
+    def atualizar_contato(self,indice, nome=None, telefone=None, email= None):
         if 0 <= indice < len(self.contatos):
-            self.contatos[indice].atualizar(nome, telefone)
+            self.contatos[indice].atualizar(nome, telefone, email)
             print(f'Contato {indice + 1} atualizado com sucesso!')
         else:
             print('Índice de contato inválido.')
@@ -92,7 +115,8 @@ def main():
         if opcao == '1':
             nome = input("Nome: ")
             telefone = input("Telefone: ")
-            agenda.criar_contato(nome, telefone)
+            email = input('E-mail: ')
+            agenda.criar_contato(nome, telefone, email)
 
         # Opção para listar contatos:
         elif opcao == '2':
@@ -112,7 +136,8 @@ def main():
                     if (0 <= indice) and (indice + 1 <= agenda.listar_contatos()):
                         nome = input("Novo nome (deixe em branco para manter): ")
                         telefone = input("Novo telefone (deixe em branco para manter): ")
-                        agenda.atualizar_contato(indice, nome, telefone)
+                        email = input('Novo email (deixe em branco para manter):')
+                        agenda.atualizar_contato(indice, nome, telefone, email)
                     else:
                         print("Opção inválida. Tente novamente.")
                 else:
