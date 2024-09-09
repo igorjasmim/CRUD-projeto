@@ -15,9 +15,13 @@ def agenda_csv(dicionario, index):
         with open('agenda.csv', 'a') as agenda:
             agenda.write('ID,Nome,Telefone,Email\n')
 
-  #abrir o arquivo para gravar as informações inputadas
+    with open('agenda.csv', 'r') as agenda:  #qualqer ação realizada dentro do doc deve ser especificado em with open
+        index = agenda.readlines() #ler o total de linhas do arquivo gerado 
+        ler_id = len(index)
+        
+  #abrir o arquivo para gravar as informações inputadas e sequenciando a lista
     with open('agenda.csv', 'a') as agenda:
-        agenda.write(f'{index},{dicionario["Nome: "]},{dicionario["Telefone: "]},{dicionario["Email: "]}\n')
+        agenda.write(f'{ler_id},{dicionario["Nome: "]},{dicionario["Telefone: "]},{dicionario["Email: "]}\n')
 
 dict_contatos = {}
 index = 1  
