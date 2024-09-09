@@ -1,11 +1,32 @@
+# função entender o status do arquivo (existência), atribuir o cabeçalho e garantir que caso exista, siga complementando informações
+def agenda_csv(contatos):
+        try:    
+            with open('agenda.csv', 'r') as agenda:
+                if agenda.read().strip() == '':
+                    raise FileNotFoundError
+        except:
+            with open('agenda.csv', 'a') as agenda:
+                agenda.write('ID,Nome,Telefone,Email\n')
+
+    #ler quantidade de linhas para determinar o último id
+        with open('agenda.csv', 'r') as agenda: #qualqer ação realizada dentro do doc deve ser especificado em with open
+            linhas = agenda.readlines()
+            ler_id = len(linhas) #ler o total de linhas do arquivo gerado 
+
+    #abrir o arquivo para gravar as informações inputadas e sequenciando a lista
+        with open('agenda.csv','a') as agenda:
+            agenda.write(f'{ler_id},{contatos.nome},{contatos.telefone},{contatos.email}\n')
+        
+#função para validar domínios dos e-mails
 def validar_email(novo_email):
-    emails_validos = ['@gmail.com', '@hotmial.com', '@outlook.com', '@yahoo.com.br', '@uol.com.br']
+    emails_validos = ['@gmail.com', '@hotmail.com', '@outlook.com', '@yahoo.com.br', '@uol.com.br']
     if '@' in novo_email:
-        dominio = '@' + novo_email.split('@')[-1].strip()
+        dominio = '@' + novo_email.split('@')[-1].strip() #procurar e checar à partir do @ até o final da palavra se os caracteres inseridos correspondem
     else:
         return False
-    return dominio in emails_validos
+    return dominio in emails_validos #invalidar o e-mail se o domínio não for válido
 
+#criação da classe contato e a representação das informações para o banco de dados
 class Contato:
     def __init__(self, nome, telefone, email) -> None:
         self._nome = nome
@@ -19,14 +40,15 @@ class Contato:
     def __len__(self) -> None:
         return 0
     
-    def atualizar(self, nome=None, telefone=None):
+    def atualizar(self, nome=None, telefone=None, email=None):
         if nome:
             self._nome = nome
         if telefone:
             self._telefone = telefone
         if email:
             self._email = email
-            
+
+     #deixando os atributos como propriedades particulares    
     @property
     def nome(self):
         return self._nome
@@ -39,6 +61,7 @@ class Contato:
     def email(self):
         return self._email
     
+    #utilizando o método setter para permitir a edição dos atributos
     @nome.setter
     def nome(self, novo_nome):
         if all(caracter.isalpha() or caracter.isspace() for caracter in novo_nome):
@@ -64,12 +87,15 @@ class Contato:
 class Agenda:
     def __init__(self):
         self.contatos = []
-        
+
+    #função para criar o contato e popular o arquivo CSv    
     def criar_contato(self, nome, telefone, email):
         novo_contato = Contato(nome, telefone, email)
         self.contatos.append(novo_contato)
+        agenda_csv(novo_contato)
         print(novo_contato)
-        
+
+  #função para listar os contatos existentes na agenda       
     def listar_contatos(self):
         if not self.contatos:
             print('Nenhum contato na agenda.')
@@ -80,7 +106,7 @@ class Agenda:
                 cont = idx
             return cont
             
-    
+    #função para atualizar os contatos utilizando o index como seletor
     def atualizar_contato(self,indice, nome=None, telefone=None, email= None):
         if 0 <= indice < len(self.contatos):
             self.contatos[indice].atualizar(nome, telefone, email)
@@ -88,6 +114,7 @@ class Agenda:
         else:
             print('Índice de contato inválido.')
     
+    #função para excluir contato utilizando o index como seletor
     def excluir_contato(self,indice):
         if 0 <= indice < len(self.contatos):
             contato_removido = self.contatos.pop(indice)
@@ -95,7 +122,7 @@ class Agenda:
         else:
             print('Índice de contato inválido.')
             
-            
+#função de menu-entrada para definir a ação desejada           
 def menu():
     print("\nAgenda de Contatos")
     print("1. Adicionar Contato")
