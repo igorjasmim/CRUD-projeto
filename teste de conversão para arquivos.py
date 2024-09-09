@@ -43,7 +43,7 @@ while True:
         while True: 
             continuar = input('Deseja adicionar outro contato? (s/n): ')
             if continuar.lower() == 'n':
-                print('Saindo da agenda...')
+                print('Você saiu da agenda.')
                 exit()
             elif continuar.lower() == 's':
                 break 
